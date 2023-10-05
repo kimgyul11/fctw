@@ -14,7 +14,7 @@ export default function SignupForm() {
     e.preventDefault();
     try {
       const auth = getAuth(app);
-      createUserWithEmailAndPassword(auth, email, password);
+      await createUserWithEmailAndPassword(auth, email, password);
       navigate("/");
       toast.success("🎉 성공적으로 가입되었습니다. ");
     } catch (error: any) {
@@ -58,6 +58,7 @@ export default function SignupForm() {
       }
     }
   };
+  const onClickSocialLogin = () => {};
   return (
     <form className="form form--lg" onSubmit={onSubmit}>
       <div className="form__title">회원가입</div>
@@ -105,13 +106,33 @@ export default function SignupForm() {
           로그인하기
         </Link>
       </div>
-      <div className="form__block">
+      <div className="form__block--lg">
         <button
           type="submit"
-          className="form__btn-submit"
+          className="form__btn--submit"
           disabled={error?.length > 0}
         >
           회원가입
+        </button>
+      </div>
+      <div className="form__block">
+        <button
+          type="button"
+          name="google"
+          className="form__btn--google"
+          onClick={onClickSocialLogin}
+        >
+          Google로 회원가입
+        </button>
+      </div>
+      <div className="form__block">
+        <button
+          type="button"
+          name="github"
+          className="form__btn--github"
+          onClick={onClickSocialLogin}
+        >
+          Github으로 회원가입
         </button>
       </div>
     </form>
