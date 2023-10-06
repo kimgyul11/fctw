@@ -23,33 +23,41 @@ export default function PostBox({ post }: PostBoxProps) {
       navigate("/");
     }
   };
+
   return (
     <div className="post__box" key={post?.id}>
-      <Link to={`/posts/${post?.id}`}>
-        <div className="post__box-profile">
-          <div className="post__flex">
-            {post?.profileUrl ? (
-              <img
-                src={post?.profileUrl}
-                alt="profile"
-                className="post__box-profile-img"
-              />
-            ) : (
-              <FaUserCircle className="post__box-profile-img" />
-            )}
-            <div className="post__email">{post?.email}</div>
-            <div className="post__createdAt">{post?.createAt}</div>
-          </div>
-          <div className="post__box-content">{post?.content}</div>
-          <div className="post-form__hashtags-outputs">
-            {post?.hashTags?.map((tag, idx) => (
-              <span className="post-form__hashtags-tag" key={idx}>
-                #{tag}
-              </span>
-            ))}
-          </div>
+      <div className="post__box-profile">
+        <div className="post__flex">
+          {post?.profileUrl ? (
+            <img
+              src={post?.profileUrl}
+              alt="profile"
+              className="post__box-profile-img"
+            />
+          ) : (
+            <FaUserCircle className="post__box-profile-img" />
+          )}
+          <div className="post__email">{post?.email}</div>
+          <div className="post__createdAt">{post?.createAt}</div>
         </div>
-      </Link>
+        <Link to={`/posts/${post?.id}`}>
+          <div className="post__box-content">{post?.content}</div>
+        </Link>
+        <div className="post-form__hashtags-outputs">
+          {post?.hashTags?.map((tag, idx) => (
+            <span
+              className="post-form__hashtags-tag"
+              onClick={() => {
+                navigate(`/search/${tag}`);
+              }}
+              key={idx}
+            >
+              #{tag}
+            </span>
+          ))}
+        </div>
+      </div>
+
       <div className="post__box-footer">
         {/* post.uid === user.uid일 때 */}
 

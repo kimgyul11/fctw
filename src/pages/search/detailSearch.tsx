@@ -10,15 +10,20 @@ import {
 import { db } from "firebaseApp";
 import { PostProps } from "pages/home";
 import { useContext, useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
 
-export default function SearchPage() {
+export default function DetailSearch() {
+  const params = useParams();
   const [posts, setPosts] = useState<PostProps[]>([]);
-  const [tagQuery, setTagQuery] = useState<string>("");
+  const [tagQuery, setTagQuery] = useState<any>(params.id);
   const { user } = useContext(AuthContext);
 
   const onChange = (e: any) => {
     setTagQuery(e?.target?.value?.trim());
   };
+  useEffect(() => {
+    setTagQuery(params.id);
+  }, [params]);
   useEffect(() => {
     if (user) {
       let postsRef = collection(db, "posts");
