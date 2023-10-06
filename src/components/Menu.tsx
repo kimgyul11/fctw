@@ -5,6 +5,9 @@ import { AiOutlineLogin, AiOutlineLogout } from "react-icons/ai";
 import { useNavigate } from "react-router-dom";
 import { useContext } from "react";
 import AuthContext from "context/AuthContext";
+import { getAuth, signOut } from "firebase/auth";
+import { app } from "firebaseApp";
+import { toast } from "react-toastify";
 
 export default function MenuList() {
   const { user } = useContext(AuthContext);
@@ -27,7 +30,15 @@ export default function MenuList() {
             Login
           </button>
         ) : (
-          <button type="button" onClick={() => navigate("/")}>
+          <button
+            type="button"
+            onClick={async () => {
+              const auth = getAuth(app);
+              await signOut(auth);
+              alert("로그아웃 하실건가요?");
+              toast.success("로그아웃 되었습니다!");
+            }}
+          >
             <AiOutlineLogout />
             Logout
           </button>
