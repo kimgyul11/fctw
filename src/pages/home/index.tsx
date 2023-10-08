@@ -13,7 +13,7 @@ export interface PostProps {
   uid: string;
   profileUrl?: string;
   likes?: string[];
-  likeCounte?: number;
+  likeCount?: number;
   coments?: any;
   hashTags?: string[];
   imageUrl?: string;
