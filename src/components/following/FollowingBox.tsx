@@ -19,11 +19,13 @@ interface FollowingProps {
 export default function FollowingBox({ post }: FollowingProps) {
   const { user } = useContext(AuthContext);
   const [postFollowers, setPostFolloweres] = useState<any>([]);
+
+  //팔로우  버튼 클릭 이벤트
   const onClickFollow = async (e: any) => {
     e.preventDefault();
     try {
       if (user?.uid) {
-        //팔로우 하는 사람의 컬렉션을 생성하거나 업데이트
+        //현재 로그인한 유저uid를 기준으로 following 문서에 post.uid를 넣는다.
         const followingRef = doc(db, "following", user?.uid);
         await setDoc(
           followingRef,
@@ -32,7 +34,7 @@ export default function FollowingBox({ post }: FollowingProps) {
           },
           { merge: true }
         );
-        //팔로우 당하는 사람의 컬렉션을 생성하거나 업데이트
+        //현재 포스트의 유저 uid를 기준으로 follower에 로그인한 유저의 user.uid 넣는다.
         const followerRef = doc(db, "follower", post?.uid);
         await setDoc(
           followerRef,
@@ -43,7 +45,8 @@ export default function FollowingBox({ post }: FollowingProps) {
       }
     } catch {}
   };
-  //팔로잉,팔로우를 가져온다.
+
+  //팔로우 사용자를 가져온다.
   const getFollowers = useCallback(async () => {
     if (post.uid) {
       const ref = doc(db, "follower", post.uid);
@@ -61,6 +64,7 @@ export default function FollowingBox({ post }: FollowingProps) {
     getFollowers();
   }, [getFollowers, post.uid]);
 
+  //팔로잉 취소
   const onClickDeleteFollow = async (e: any) => {
     e.preventDefault();
     try {
