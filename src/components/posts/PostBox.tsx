@@ -1,3 +1,4 @@
+import FollowingBox from "components/following/FollowingBox";
 import AuthContext from "context/AuthContext";
 import {
   arrayRemove,
@@ -72,8 +73,13 @@ export default function PostBox({ post }: PostBoxProps) {
           ) : (
             <FaUserCircle className="post__box-profile-img" />
           )}
-          <div className="post__email">{post?.email}</div>
-          <div className="post__createdAt">{post?.createAt}</div>
+          <div className="post__flex--between">
+            <div className="post__flex">
+              <div className="post__email">{post?.email}</div>
+              <div className="post__createdAt">{post?.createdAt}</div>
+            </div>
+            <FollowingBox post={post} />
+          </div>
         </div>
         <Link to={`/posts/${post?.id}`}>
           <div className="post__box-content">{post?.content}</div>
@@ -133,7 +139,7 @@ export default function PostBox({ post }: PostBoxProps) {
           </button>
           <button type="button" className="post__comments">
             <FaRegComment />
-            {post?.coments?.length || 0}
+            {post?.comment?.length || 0}
           </button>
         </>
       </div>

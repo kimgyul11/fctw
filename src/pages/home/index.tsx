@@ -9,12 +9,12 @@ export interface PostProps {
   id: string;
   email: string;
   content: string;
-  createAt: string;
+  createdAt: string;
   uid: string;
   profileUrl?: string;
   likes?: string[];
   likeCount?: number;
-  coments?: any;
+  comment?: any;
   hashTags?: string[];
   imageUrl?: string;
 }
