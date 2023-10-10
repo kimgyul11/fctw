@@ -1,3 +1,4 @@
+import { languageState } from "atom";
 import PostBox from "components/posts/PostBox";
 import AuthContext from "context/AuthContext";
 import {
@@ -11,6 +12,7 @@ import { db } from "firebaseApp";
 import { PostProps } from "pages/home";
 import { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useRecoilState } from "recoil";
 
 //기본 프로필 이미지
 const PROFILE_DEFAULT_URL = "/logo512.png";
@@ -22,6 +24,15 @@ export default function ProfilePage() {
   const [likePosts, setLikePosts] = useState<PostProps[]>([]);
   const { user } = useContext(AuthContext);
   const navigate = useNavigate();
+
+  const [language, setLanguage] = useRecoilState(languageState);
+
+  const onClickLanguage = () => {
+    //현재 상태가 ko면 en으로 바꾸고 아니라면 ko로 변경
+    setLanguage(language === "ko" ? "en" : "ko");
+    localStorage.setItem("language", language === "ko" ? "en" : "ko");
+  };
+
   useEffect(() => {
     if (user) {
       let postsRef = collection(db, "posts");
@@ -64,13 +75,22 @@ export default function ProfilePage() {
             width={100}
             height={100}
           />
-          <button
-            type="button"
-            className="profile__btn"
-            onClick={() => navigate("/profile/edit")}
-          >
-            프로필 수정
-          </button>
+          <div className="profile__flex">
+            <button
+              type="button"
+              className="profile__btn"
+              onClick={() => navigate("/profile/edit")}
+            >
+              프로필 수정
+            </button>
+            <button
+              type="button"
+              className="profile__btn"
+              onClick={onClickLanguage}
+            >
+              {language === "ko" ? "한국어" : "English"}
+            </button>
+          </div>
         </div>
         <div className="profile__text">
           <div className="profile__name">{user?.displayName || "사용자님"}</div>
