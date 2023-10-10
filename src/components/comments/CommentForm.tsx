@@ -1,5 +1,11 @@
 import AuthContext from "context/AuthContext";
-import { arrayUnion, doc, updateDoc } from "firebase/firestore";
+import {
+  addDoc,
+  arrayUnion,
+  collection,
+  doc,
+  updateDoc,
+} from "firebase/firestore";
 import { db } from "firebaseApp";
 import { PostProps } from "pages/home";
 import React, { useContext, useState } from "react";
@@ -12,6 +18,10 @@ export interface CommentFormProps {
 export default function CommentForm({ post }: CommentFormProps) {
   const [comment, setComment] = useState<string>("");
   const { user } = useContext(AuthContext);
+
+  const truncate = (str: string) => {
+    return str?.length > 10 ? str?.substring(0, 10) + "..." : str;
+  };
 
   const onSubmit = async (e: any) => {
     e.preventDefault();
@@ -31,8 +41,23 @@ export default function CommentForm({ post }: CommentFormProps) {
         await updateDoc(postRef, {
           comment: arrayUnion(commentObj),
         });
-        toast.success("댓글작성 완료");
-        setComment("");
+
+        //댓글 생성 알림 만들기
+        if (user?.uid !== post?.uid) {
+          await addDoc(collection(db, "notifications"), {
+            createdAt: new Date()?.toLocaleString("ko", {
+              hour: "2-digit",
+              minute: "2-digit",
+              second: "2-digit",
+            }),
+            uid: post?.uid,
+            isRead: false,
+            url: `/posts/${post?.id}`,
+            content: `${truncate(post?.content)}글에 댓글이 작성되었습니다.`,
+          });
+          toast.success("댓글작성 완료");
+          setComment("");
+        }
       } catch (e: any) {
         console.log(e);
       }

@@ -59,6 +59,7 @@ export default function HomePage() {
     if (user) {
       let postsRef = collection(db, "posts");
       let postQuery = query(postsRef, orderBy("createdAt", "desc"));
+
       let followingQuery = query(
         postsRef,
         where("uid", "in", followingIds),

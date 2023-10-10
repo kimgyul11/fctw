@@ -1,7 +1,7 @@
 import { BsFillHouseFill } from "react-icons/bs";
 import { CgProfile } from "react-icons/cg";
 import { AiOutlineLogin, AiOutlineLogout } from "react-icons/ai";
-import { BsSearch } from "react-icons/bs";
+import { BsSearch, BsBell } from "react-icons/bs";
 import { useNavigate } from "react-router-dom";
 import { useContext } from "react";
 import AuthContext from "context/AuthContext";
@@ -27,6 +27,11 @@ export default function MenuList() {
           <BsSearch />
           Search
         </button>
+        <button type="button" onClick={() => navigate("/notifications")}>
+          <BsBell />
+          알림
+        </button>
+
         {user === null ? (
           <button type="button" onClick={() => navigate("/users/login")}>
             <AiOutlineLogin />

@@ -29,7 +29,7 @@ export default function PostBox({ post }: PostBoxProps) {
     //가져올 포스트 ref
     const postRef = doc(db, "posts", post.id);
 
-    //사용자가 좋아요를 눌렀을 경우 좋아요를 취소한다.
+    //사용자가 좋아요를 눌렀을 경우 이미 좋아요가 눌려있다면 좋아요를 취소한다.
     if (user?.uid && post?.likes?.includes(user?.uid)) {
       await updateDoc(postRef, {
         likes: arrayRemove(user?.uid),
